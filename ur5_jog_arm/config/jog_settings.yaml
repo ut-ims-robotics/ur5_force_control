@@ -1,0 +1,16 @@
+jog_arm_server:
+  cmd_in_topic: jog_arm_server/delta_jog_cmds
+  joint_topic: joint_states
+  move_group_name: manipulator
+  singularity_threshold:  5.5
+  cmd_out_topic: ur_driver/joint_speed
+  planning_frame: base_link
+  low_pass_filter_coeff: 2.  # Larger c --> trust the filtered data more, trust the measurements less.
+  pub_period: 0.01  # 1/Nominal publish rate [seconds]
+  scale:
+    linear: 0.0004
+    rotational: 0.0008
+
+# This node republishes joystick messages for the arm jogger.
+joy_to_twist:
+  cmd_frame: base_link
