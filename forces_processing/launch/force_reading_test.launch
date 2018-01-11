@@ -1,5 +1,9 @@
 <launch>
-  <!-- gui -->
+
+  <node pkg="forces_processing" name="particle_filter_node" type="particle_filter_node" output="screen" />
+
+
+  <!-- gui
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" output="screen"/>
 
   <node name="force_reading_test" pkg="forces_processing" type="force_reading_test.py" output="screen"/>
@@ -8,6 +12,7 @@
     <arg name="robot_ip" value="192.168.1.80"/>
   </include>
 
-  <include file="$(find ur5_custom_config)/launch/ur5_on_table_moveit_planning_execution.launch"/>
 
+  <include file="$(find ur5_custom_config)/launch/ur5_on_table_moveit_planning_execution.launch"/>
+-->
 </launch>
