@@ -1,4 +1,5 @@
 #include "forces_processing/particle_filter.h"
+#include "forces_processing/particle_sample.h"
 
 int main(int argc, char **argv) {
 
