@@ -20,6 +20,7 @@ private:
     float max_probability;
     void resample_particles();
     void recalc_weights();
+    void move_particles();
 public:
     ParticleFilter();
     void update_measurement(geometry_msgs::Vector3);

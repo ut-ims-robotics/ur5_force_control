@@ -2,15 +2,28 @@
 #include "forces_processing/particle_sample.h"
 #include <cmath>
 #include <math.h>
-
+#include <random>
 
 ParticleFilter::ParticleFilter() {}
 
 void ParticleFilter::update_measurement(geometry_msgs::Vector3 measurement) {
     current_measurement = measurement;
-    //Move particles (cannot move because there is no motion model for force sensing)
+    move_particles();
     recalc_weights();
     resample_particles();
+}
+
+void ParticleFilter::move_particles() {
+    std::default_random_engine generator;
+
+    for (int i = 0; i < PARTICLE_COUNT; ++i) {
+        std::normal_distribution<double> distribution_x(particles[i].particle.x, 0.05);
+        particles[i].particle.x = distribution_x(generator);
+        std::normal_distribution<double> distribution_y(particles[i].particle.y, 0.05);
+        particles[i].particle.y = distribution_y(generator);
+        std::normal_distribution<double> distribution_z(particles[i].particle.z, 0.05);
+        particles[i].particle.z = distribution_z(generator);
+    }
 }
 
 
