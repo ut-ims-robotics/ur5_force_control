@@ -1,5 +1,8 @@
 <launch>
 
+  <env name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find forces_processing)/conf/custom_rosconsole.conf"/>
+
   <node pkg="forces_processing" name="particle_filter_node" type="particle_filter_node" output="screen" />
 
 
