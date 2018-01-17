@@ -28,7 +28,7 @@ include_directories(
 
 #
 
-add_library(forces_processing src/particle_filter.cpp)
+add_library(forces_processing src/particle_filter.cpp src/particle_filter_node.cpp)
 target_link_libraries(forces_processing ${catkin_LIBRARIES})
 
 add_executable(particle_filter_node src/particle_filter_node.cpp)

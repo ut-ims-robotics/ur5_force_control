@@ -7,6 +7,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <std_msgs/Float64.h>
 #include "forces_processing/particle_sample.h"
+#include <geometry_msgs/WrenchStamped.h>
 
 class ParticleFilter {
 private:
@@ -20,7 +21,6 @@ private:
     void resample_particles();
     void recalc_weights();
 public:
-
     ParticleFilter();
     void update_measurement(geometry_msgs::Vector3);
     void start(geometry_msgs::Vector3 measurement);

@@ -1,49 +1,50 @@
-#include "forces_processing/particle_filter.h"
-#include "forces_processing/particle_sample.h"
+#include "forces_processing/particle_filter_node.h"
+
+
+void ParticleFilterNode::measurement_callback(const geometry_msgs::WrenchStamped &wrench_msg) {
+    input_wrench_msg = wrench_msg;
+
+    if (!initialized) {
+        forcesParticleFilter = ParticleFilter();
+        forcesParticleFilter.start(wrench_msg.wrench.force);
+
+        torqueParticleFilter = ParticleFilter();
+        torqueParticleFilter.start(wrench_msg.wrench.torque);
+        initialized = true;
+    }
+
+    forcesParticleFilter.update_measurement(wrench_msg.wrench.force);
+    torqueParticleFilter.update_measurement(wrench_msg.wrench.torque);
+
+    publish_filtered_wrench();
+}
+
+void ParticleFilterNode::publish_filtered_wrench() {
+    input_wrench_msg.wrench.force = forcesParticleFilter.get_most_probable();
+    input_wrench_msg.wrench.torque = torqueParticleFilter.get_most_probable();
+
+    ROS_DEBUG("filtered force x: %f", input_wrench_msg.wrench.force.x);
+    ROS_DEBUG("filtered force y: %f", input_wrench_msg.wrench.force.y);
+    ROS_DEBUG("filtered force z: %f", input_wrench_msg.wrench.force.z);
+    ROS_DEBUG("===");
+
+    ROS_DEBUG("filtered torque x: %f", input_wrench_msg.wrench.torque.x);
+    ROS_DEBUG("filtered torque y: %f", input_wrench_msg.wrench.torque.y);
+    ROS_DEBUG("filtered torque z: %f", input_wrench_msg.wrench.torque.z);
+    ROS_DEBUG("===");
+
+    filtered_value_pub.publish(input_wrench_msg);
+}
+
 
 int main(int argc, char **argv) {
-
     ros::init(argc, argv, "particle_filter_node");
-    ros::start();
+    ros::NodeHandle nh;
+    ros::Rate r(10);
 
-    ros::Rate r(10); //10 hz
+    ParticleFilterNode particleFilterNode = ParticleFilterNode(nh);
 
+    ros::spin();
 
-    //Initial mock vector JUST FOR TESTING AT THE MOMENT
-    srand(time(0));
-
-    geometry_msgs::Vector3 mock_vector;
-    mock_vector.x = ((float) rand() / (RAND_MAX));
-    mock_vector.y = ((float) rand() / (RAND_MAX));
-    mock_vector.z = ((float) rand() / (RAND_MAX));
-
-
-    ParticleFilter particleFilter;
-    particleFilter.start(mock_vector);
-
-    geometry_msgs::Vector3 filtered = particleFilter.get_most_probable();
-    ROS_DEBUG("initial x: %f", mock_vector.x);
-    ROS_DEBUG("initial y: %f", mock_vector.y);
-    ROS_DEBUG("initial z: %f", mock_vector.z);
-    ROS_DEBUG("===");
-    ROS_DEBUG("filtered x: %f", filtered.x);
-    ROS_DEBUG("filtered y: %f", filtered.y);
-    ROS_DEBUG("filtered z: %f", filtered.z);
-    ROS_DEBUG("===");
-
-    particleFilter.update_measurement(mock_vector);
-    geometry_msgs::Vector3 filtered2 = particleFilter.get_most_probable();
-    ROS_DEBUG("initial x: %f", mock_vector.x);
-    ROS_DEBUG("initial y: %f", mock_vector.y);
-    ROS_DEBUG("initial z: %f", mock_vector.z);
-    ROS_DEBUG("===");
-    ROS_DEBUG("filtered2 x: %f", filtered2.x);
-    ROS_DEBUG("filtered2 y: %f", filtered2.y);
-    ROS_DEBUG("filtered2 z: %f", filtered2.z);
-
-
-//    while (ros::ok()) {
-//
-//        r.sleep();
-//    }
+    return 0;
 }

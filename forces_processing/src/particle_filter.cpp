@@ -4,8 +4,7 @@
 #include <math.h>
 
 
-ParticleFilter::ParticleFilter() {
-}
+ParticleFilter::ParticleFilter() {}
 
 void ParticleFilter::update_measurement(geometry_msgs::Vector3 measurement) {
     current_measurement = measurement;
@@ -31,10 +30,10 @@ void ParticleFilter::start(geometry_msgs::Vector3 measurement) {
         vector.z = ((float) rand() / (RAND_MAX));
         //
 
-        ROS_DEBUG("rand x: %f", vector.x);
-        ROS_DEBUG("rand y: %f", vector.y);
-        ROS_DEBUG("rand z: %f", vector.z);
-        ROS_DEBUG("===");
+//        ROS_DEBUG("rand x: %f", vector.x);
+//        ROS_DEBUG("rand y: %f", vector.y);
+//        ROS_DEBUG("rand z: %f", vector.z);
+//        ROS_DEBUG("===");
 
         ParticleSample sample = ParticleSample();
         sample.particle = vector;
