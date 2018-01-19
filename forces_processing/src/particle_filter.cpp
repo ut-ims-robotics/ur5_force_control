@@ -17,13 +17,20 @@ void ParticleFilter::move_particles() {
     std::default_random_engine generator;
 
     for (int i = 0; i < PARTICLE_COUNT; ++i) {
-        std::normal_distribution<double> distribution_x(particles[i].particle.x, 0.05);
+        particles[i].count = 0;
+
+        std::normal_distribution<double> distribution_x(particles[i].particle.x, 1);
         particles[i].particle.x = distribution_x(generator);
-        std::normal_distribution<double> distribution_y(particles[i].particle.y, 0.05);
+        std::normal_distribution<double> distribution_y(particles[i].particle.y, 1);
         particles[i].particle.y = distribution_y(generator);
-        std::normal_distribution<double> distribution_z(particles[i].particle.z, 0.05);
+        std::normal_distribution<double> distribution_z(particles[i].particle.z, 1);
         particles[i].particle.z = distribution_z(generator);
     }
+}
+
+float ParticleFilter::random_number(float min, float max)
+{
+    return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
 }
 
 
@@ -32,21 +39,21 @@ void ParticleFilter::start(geometry_msgs::Vector3 measurement) {
 
     current_measurement = measurement;
 
-    //srand(time(1));
+    srand(time(NULL));
 
     //Initialize particles
     for (int i = 0; i < PARTICLE_COUNT; ++i) {
         geometry_msgs::Vector3 vector;
         //TODO: maybe not fully at random but by the first measurement and gaussian distribution
-        vector.x = ((float) rand() / (RAND_MAX)); //TODO determine the range
-        vector.y = ((float) rand() / (RAND_MAX));
-        vector.z = ((float) rand() / (RAND_MAX));
+        vector.x = random_number(-300, 300);
+        vector.y = random_number(-300, 300);
+        vector.z = random_number(-300, 300);
         //
 
-//        ROS_DEBUG("rand x: %f", vector.x);
-//        ROS_DEBUG("rand y: %f", vector.y);
-//        ROS_DEBUG("rand z: %f", vector.z);
-//        ROS_DEBUG("===");
+        ROS_DEBUG("rand x: %f", vector.x);
+        ROS_DEBUG("rand y: %f", vector.y);
+        ROS_DEBUG("rand z: %f", vector.z);
+        ROS_DEBUG("===");
 
         ParticleSample sample = ParticleSample();
         sample.particle = vector;
@@ -62,7 +69,6 @@ void ParticleFilter::start(geometry_msgs::Vector3 measurement) {
 void ParticleFilter::recalc_weights() {
     float weight_sum = 0.0;
     for (int i = 0; i < PARTICLE_COUNT; i++) {
-        //TODO maybe consider last step's weight and get mean of the two
         particles[i].weight = get_particle_weight(particles[i].particle);
         weight_sum += particles[i].weight;
     }
@@ -81,9 +87,9 @@ void ParticleFilter::recalc_weights() {
 
 
 float ParticleFilter::get_particle_weight(geometry_msgs::Vector3 particle) {
-    float x_prob = gaussian_prob(current_measurement.x, 0.05, particle.x);
-    float y_prob = gaussian_prob(current_measurement.y, 0.05, particle.y);
-    float z_prob = gaussian_prob(current_measurement.z, 0.05, particle.z);
+    float x_prob = gaussian_prob(current_measurement.x, 25, particle.x);
+    float y_prob = gaussian_prob(current_measurement.y, 25, particle.y);
+    float z_prob = gaussian_prob(current_measurement.z, 25, particle.z);
 
     return x_prob + y_prob + z_prob / 3;
 }
@@ -96,6 +102,7 @@ void ParticleFilter::resample_particles() {
     std::vector <ParticleSample> resampled_particles;
     int index = static_cast <int> (rand()) / (static_cast <int> (RAND_MAX / PARTICLE_COUNT));
     float beta = 0.0;
+    int max_count = 0;
 
     for (int i = 0; i < PARTICLE_COUNT; ++i) {
         float randomnr = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -107,6 +114,11 @@ void ParticleFilter::resample_particles() {
             particles[index] = particles[index];
         }
 
+        particles[index].count ++;
+        if (particles[index].count > max_count) {
+            max_count = particles[index].count;
+            //most_probable_measurement = particles[index].particle;
+        }
         resampled_particles.push_back(particles[index]);
     }
 

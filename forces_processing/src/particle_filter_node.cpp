@@ -4,6 +4,10 @@
 void ParticleFilterNode::measurement_callback(const geometry_msgs::WrenchStamped &wrench_msg) {
     input_wrench_msg = wrench_msg;
 
+    ROS_DEBUG("input force x: %f", input_wrench_msg.wrench.force.x);
+    ROS_DEBUG("input force y: %f", input_wrench_msg.wrench.force.y);
+    ROS_DEBUG("input force z: %f", input_wrench_msg.wrench.force.z);
+
     if (!initialized) {
         forcesParticleFilter = ParticleFilter();
         forcesParticleFilter.start(wrench_msg.wrench.force);
@@ -44,6 +48,8 @@ int main(int argc, char **argv) {
 
     ParticleFilterNode particleFilterNode = ParticleFilterNode(nh);
 
+    geometry_msgs::Vector3 vector;
+    srand(time(NULL));
     ros::spin();
 
     return 0;

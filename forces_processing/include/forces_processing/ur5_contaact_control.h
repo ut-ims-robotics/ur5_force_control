@@ -1,8 +1,0 @@
-//
-// Created by martin on 9.12.17.
-//
-
-#ifndef PROJECT_UR5_CONTAACT_CONTROL_H
-#define PROJECT_UR5_CONTAACT_CONTROL_H
-
-#endif //PROJECT_UR5_CONTAACT_CONTROL_H

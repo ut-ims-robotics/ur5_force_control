@@ -6,7 +6,10 @@ class ParticleSample {
 private:
 
 public:
-    ParticleSample() {};
+    int count;
+    ParticleSample() {
+        count = 0;
+    };
     geometry_msgs::Vector3 particle;
     float probability;
     float weight;

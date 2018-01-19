@@ -3,19 +3,12 @@
   <env name="ROSCONSOLE_CONFIG_FILE"
        value="$(find forces_processing)/conf/custom_rosconsole.conf"/>
 
-  <node pkg="forces_processing" name="particle_filter_node" type="particle_filter_node" output="screen" />
-
-  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" output="screen"/>
-  <!-- gui
-
-
-  <node name="force_reading_test" pkg="forces_processing" type="force_reading_test.py" output="screen"/>
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
 
   <include file="$(find ur_modern_driver)/launch/ur5_bringup.launch">
-    <arg name="robot_ip" value="192.168.1.80"/>
+    <arg name="robot_ip" value="192.168.1.68"/>
   </include>
 
-
   <include file="$(find ur5_custom_config)/launch/ur5_on_table_moveit_planning_execution.launch"/>
--->
+
 </launch>
