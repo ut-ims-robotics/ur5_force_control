@@ -1,0 +1,6 @@
+<!-- moveit path planning must be started beforehand -->
+<launch>
+  <include file="$(find jog_arm)/launch/test_with_joystick.launch"/>
+  <!-- override with custom settings -->
+  <rosparam command="load" file="$(find ur5_jog_arm)/config/jog_settings.yaml"/>
+</launch>
