@@ -6,7 +6,8 @@
 
 class Ur5ContactControlNode {
 private:
-  void init();
+
 public:
     Ur5ContactControlNode() {};
+    void init();
 };
