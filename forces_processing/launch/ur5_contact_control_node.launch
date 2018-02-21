@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="forces_processing" name="ur5_contact_control_node" type="ur5_contact_control_node" output="screen"/>
+</launch>
