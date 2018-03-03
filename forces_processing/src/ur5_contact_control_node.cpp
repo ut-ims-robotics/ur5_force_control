@@ -1,6 +1,6 @@
 #include "forces_processing/ur5_contact_control_node.h"
-
-
+#include "ur5_moveit/robot_mover.h"
+#include "../../../ur5_path_planning/ur5_moveit/include/ur5_moveit/robot_mover.h"
 
 void Ur5ContactControlNode::init() {
   ContactControl contactControl = ContactControl();
@@ -9,12 +9,13 @@ void Ur5ContactControlNode::init() {
   contactControl.initialize("manipulator", "base_link", "base_link", "base_link", "base_link");
 
   ROS_INFO("Ur5ContactControlNode initialized successfully!");
+  double maxForce = 50.0;
+  double maxAllowedForce = 100.0;
+  double speedCoef = 0.5;
 
-  contactControl.setFollower(Contact::Dimension::DIM_Y, 50, 50);
+  contactControl.setFollower(Contact::Dimension::DIM_Y, maxForce, maxAllowedForce);
 
-
-  Contact::EndCondition endCondition = contactControl.move(50.0, 100.0, 0.5);
-
+  Contact::EndCondition endCondition = contactControl.move(maxAllowedForce, maxAllowedForce, speedCoef);
 
   ROS_INFO("EndCondition: %i", endCondition);
 }
@@ -24,12 +25,16 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "ur5_contact_control_node");
   ros::NodeHandle nh;
   ros::Rate r(10);
+  ros::AsyncSpinner spinner(1);
+  spinner.start();
+
+
+  RobotMover robotMover = RobotMover();
+  robotMover.moveToHome();
+  ROS_INFO("Robot moved to home!");
 
   Ur5ContactControlNode ur5ContactControlNode = Ur5ContactControlNode();
   ur5ContactControlNode.init();
-
-
-  ros::spin();
 
   return 0;
 }

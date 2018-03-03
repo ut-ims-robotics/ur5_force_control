@@ -1,5 +1,5 @@
 <launch>
-  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" />
 
   <include file="$(find ur5_custom_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>

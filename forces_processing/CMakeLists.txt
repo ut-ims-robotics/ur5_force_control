@@ -9,13 +9,11 @@ find_package(catkin REQUIRED COMPONENTS
         roscpp
         rospy
         std_msgs
-        contact_control)
+        contact_control
+        ur5_moveit)
 
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
-
-add_compile_options(-std=c++11)
-
 
 catkin_install_python(PROGRAMS
         scripts/force_reading_test.py
@@ -26,7 +24,7 @@ catkin_install_python(PROGRAMS
 catkin_package(
         INCLUDE_DIRS include
         LIBRARIES forces_processing
-        CATKIN_DEPENDS contact_control moveit_core moveit_kinematics
+        CATKIN_DEPENDS contact_control ur5_moveit moveit_core moveit_kinematics
         #  DEPENDS system_lib
 )
 
@@ -41,14 +39,14 @@ include_directories(
 #
 
 add_library(forces_processing src/particle_filter.cpp src/particle_filter_node.cpp)
-target_link_libraries(forces_processing ${catkin_LIBRARIES} contact_control)
+target_link_libraries(forces_processing ${catkin_LIBRARIES} contact_control ur5_moveit)
 
 add_executable(particle_filter_node src/particle_filter_node.cpp)
 target_link_libraries(particle_filter_node ${catkin_LIBRARIES} forces_processing)
 add_dependencies(particle_filter_node ${catkin_EXPORTED_TARGETS})
 
 add_executable(ur5_contact_control_node src/ur5_contact_control_node.cpp)
-target_link_libraries(ur5_contact_control_node ${catkin_LIBRARIES} forces_processing contact_control)
+target_link_libraries(ur5_contact_control_node ${catkin_LIBRARIES} forces_processing contact_control ur5_moveit)
 add_dependencies(ur5_contact_control_node ${catkin_EXPORTED_TARGETS})
 
 

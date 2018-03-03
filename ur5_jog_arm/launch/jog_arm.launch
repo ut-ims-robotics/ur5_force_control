@@ -1,5 +1,5 @@
 <launch>
-  <arg name="simu" default="false"/>
+  <arg  name="simu" default="false"/>
   <!-- override with custom settings -->
   <rosparam unless="$(arg simu)" command="load" file="$(find ur5_jog_arm)/config/jog_settings.yaml"/>
   <rosparam if="$(arg simu)" command="load" file="$(find ur5_jog_arm)/config/jog_settings_simu.yaml"/>

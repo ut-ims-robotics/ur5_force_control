@@ -1,11 +1,16 @@
 <launch>
   <arg name="simu" default="false"/>
+  <arg name="joystick" default="false"/>
+  <arg name="keyboard" default="false"/>
+
+  <include if="$(arg joystick)" file="$(find ur5_jog_arm)/launch/joystick.launch"/>
+  <include if="$(arg keyboard)" file="$(find keyboard_publisher)/launch/key_to_twist.launch"/>
 
   <env name="ROSCONSOLE_CONFIG_FILE"
        value="$(find forces_processing)/conf/custom_rosconsole.conf"/>
 
   <include unless="$(arg simu)" file="$(find ur_modern_driver)/launch/ur5_bringup.launch">
-    <arg name="robot_ip" value="192.168.1.68"/>
+    <arg name="robot_ip" value="192.168.1.82"/>
   </include>
 
   <include if="$(arg simu)" file="$(find ur5_custom_description)/launch/ur5_simu_launch_test.launch"/>
