@@ -1,4 +1,5 @@
 jog_arm_server:
+  simu: true
   cmd_in_topic: jog_arm_server/delta_jog_cmds
   incoming_cmd_timeout:  5  # Stop jogging if X seconds elapse without a new cmd
   joint_topic: joint_states
@@ -9,9 +10,9 @@ jog_arm_server:
   planning_frame: base_link
   input_frame: base_link
   low_pass_filter_coeff: 2.  # Larger c --> trust the filtered data more, trust the measurements less.
-  pub_period: 0.1  # 1/Nominal publish rate [seconds]
+  pub_period: 0.0012  # 1/Nominal publish rate [seconds]
   scale:
-    linear: 0.004
+    linear: 0.008
     rotational: 0.008
 
 # This node republishes joystick messages for the arm jogger.
