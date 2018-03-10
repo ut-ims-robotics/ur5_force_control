@@ -1,6 +1,7 @@
 jog_arm_server:
   simu: true
   cmd_in_topic: jog_arm_server/delta_jog_cmds
+  cmd_frame:  base_link  # TF frame that incoming cmds are given in
   incoming_cmd_timeout:  5  # Stop jogging if X seconds elapse without a new cmd
   joint_topic: joint_states
   move_group_name: manipulator
@@ -8,13 +9,8 @@ jog_arm_server:
   hard_stop_singularity_threshold: 12. # Stop when the condition number hits this
   cmd_out_topic: /arm_controller/command
   planning_frame: base_link
-  input_frame: base_link
   low_pass_filter_coeff: 2.  # Larger c --> trust the filtered data more, trust the measurements less.
-  pub_period: 0.0012  # 1/Nominal publish rate [seconds]
+  pub_period: 0.001  # 1/Nominal publish rate [seconds]
   scale:
-    linear: 0.008
-    rotational: 0.008
-
-# This node republishes joystick messages for the arm jogger.
-joy_to_twist:
-  cmd_frame: base_link
+    linear: 0.01
+    rotational: 0.01

@@ -10,11 +10,11 @@ void Ur5ContactControlNode::init() {
 
   ROS_INFO("Ur5ContactControlNode initialized successfully!");
   double maxForce = 50.0;
-  double maxAllowedForce = 100.0;
-  double speedCoef = 0.5;
+  double maxAllowedForce = 320.0;
+  double speedCoef = 0.08;
 
-  contactControl.setFollower(Contact::Dimension::DIM_Y, maxForce, maxAllowedForce);
-
+  contactControl.setFollower(Contact::Dimension::DIM_X, maxForce, maxAllowedForce);
+  //contactControl.setSpring(Contact::Dimension::DIM_X, 0.2, speedCoef, 1, maxAllowedForce);
   Contact::EndCondition endCondition = contactControl.move(maxAllowedForce, maxAllowedForce, speedCoef);
 
   ROS_INFO("EndCondition: %i", endCondition);
