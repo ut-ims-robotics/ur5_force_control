@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
         rospy
         std_msgs
         contact_control
-        ur5_moveit)
+        ur5_moveit
+        cartesian_impedance_msgs)
 
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
