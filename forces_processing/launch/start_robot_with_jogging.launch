@@ -10,7 +10,7 @@
        value="$(find forces_processing)/conf/custom_rosconsole.conf"/>
 
   <include unless="$(arg simu)" file="$(find ur_modern_driver)/launch/ur5_bringup.launch">
-    <arg name="robot_ip" value="192.168.1.82"/>
+    <arg name="robot_ip" value="192.168.1.88"/>
   </include>
 
   <include if="$(arg simu)" file="$(find ur5_custom_description)/launch/ur5_simu_launch_test.launch"/>

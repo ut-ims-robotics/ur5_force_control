@@ -1,5 +1,0 @@
-<launch>
-  <rosparam command="load" file="$(find contact_control)/conf/contact_control_conf.yaml"/>
-
-  <node pkg="forces_processing" name="ur5_contact_control_node" type="ur5_contact_control_node" output="screen"/>
-</launch>

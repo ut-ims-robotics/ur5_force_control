@@ -46,10 +46,6 @@ add_executable(particle_filter_node src/particle_filter_node.cpp)
 target_link_libraries(particle_filter_node ${catkin_LIBRARIES} forces_processing)
 add_dependencies(particle_filter_node ${catkin_EXPORTED_TARGETS})
 
-add_executable(ur5_contact_control_node src/ur5_contact_control_node.cpp)
-target_link_libraries(ur5_contact_control_node ${catkin_LIBRARIES} forces_processing contact_control ur5_moveit)
-add_dependencies(ur5_contact_control_node ${catkin_EXPORTED_TARGETS})
-
 
 install(FILES
         launch/force_reading_test.launch
